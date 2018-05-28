@@ -1,0 +1,16 @@
+{
+  "name": "tutorial",
+  "version": "1.0.0",
+  "description": "electron tutorial by topdown lee",
+  "main": "app/main.js",
+  "scripts": {
+    "win": "echo \"Error: no window specified\" && exit 1",
+    "mac": "node_modules/electron/dist/Electron.app/Contents/MacOS/Electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "topdown lee",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^2.0.2"
+  }
+}
