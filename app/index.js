@@ -4,37 +4,6 @@ function appMain() {
   let context = canvas.getContext('2d');
 
 
-
-  function loop_main() {
-
-    context.setTransform(1, 0, 0, 1, canvas.width / 2, canvas.height / 2); //변환행렬 초기화
-
-    context.fillStyle = 'blue';
-    context.fillRect(-canvas.width / 2, -canvas.height / 2, canvas.width, canvas.height);
-
-    context.beginPath();
-    context.moveTo(-canvas.width / 2, 0);
-    context.lineTo(canvas.width / 2, 0);
-    context.stroke()
-    context.beginPath();
-    context.moveTo(0, -canvas.height / 2);
-    context.lineTo(0, canvas.height / 2);
-    context.stroke();
-
-    context.fillStyle = 'yellow';
-    context.fillRect(0,0,50,50);
-
-    context.fillStyle = 'yellow';
-    context.fillRect(100,-100,50,50);
-
-    //test_obj.draw(context);
-
-    requestAnimationFrame(loop_main);
-
-  }
-
-  loop_main();
-
   //--------------------------
 
   var Smgr = new  esparty.elvis3d.scene.SceneManager({
@@ -148,18 +117,32 @@ function appMain() {
          deltaTick : 루프지연시간 (ms)
          */
 
+        context.setTransform(1, 0, 0, 1, canvas.width / 2, canvas.height / 2); //변환행렬 초기화
+
+        context.fillStyle = 'blue';
+        context.fillRect(-canvas.width / 2, -canvas.height / 2, canvas.width, canvas.height);
+
+        context.beginPath();
+        context.moveTo(-canvas.width / 2, 0);
+        context.lineTo(canvas.width / 2, 0);
+        context.stroke()
+        context.beginPath();
+        context.moveTo(0, -canvas.height / 2);
+        context.lineTo(0, canvas.height / 2);
+        context.stroke();
+
+        context.fillStyle = 'yellow';
+        context.fillRect(0,0,50,50);
+
+        context.fillStyle = 'yellow';
+        context.fillRect(100,-100,50,50);
+
         //console.log(event);
-
-
-
         this.updateAll();
-
 
       }
     }
   });
-
-
 
 }
 
