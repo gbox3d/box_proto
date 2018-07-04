@@ -24,6 +24,9 @@ function appMain() {
     context.fillStyle = 'yellow';
     context.fillRect(0,0,50,50);
 
+    context.fillStyle = 'yellow';
+    context.fillRect(100,-100,50,50);
+
     //test_obj.draw(context);
 
     requestAnimationFrame(loop_main);
@@ -37,9 +40,9 @@ function appMain() {
   var Smgr = new  esparty.elvis3d.scene.SceneManager({
     camera : {
       fov : 45,
-      far : 5000,
+      far : 2000,
       near : 1,
-      position : new THREE.Vector3(5, 10, 10),
+      position : new THREE.Vector3(100, 200, 300),
       lookat : new THREE.Vector3()
 
     },
@@ -55,8 +58,23 @@ function appMain() {
 
       var self = this;
 
+      // 반구조명 추가
+      light = new THREE.HemisphereLight( 0xffffff, 0x444444 );
+      light.position.set( 0, 200, 0 );
+      this.scene.add( light );
+
+      //방향광 추가
+      light = new THREE.DirectionalLight( 0xffffff );
+      light.position.set( 0, 200, 100 );
+      light.castShadow = true;
+      light.shadow.camera.top = 180;
+      light.shadow.camera.bottom = -100;
+      light.shadow.camera.left = -120;
+      light.shadow.camera.right = 120;
+      this.scene.add( light );
+
       //그리드헬퍼
-      var helper =  new THREE.GridHelper( 8,16 ,0x00ff00,0xff0000);
+      var helper =  new THREE.GridHelper( 2000,20 ,0x00ff00,0xff0000);
       //var helper =  new THREE.GridHelper( 50, 1 );
       //helper.setColors(0x00ff00,0xff0000);
       this.scene.add(helper);
@@ -78,27 +96,25 @@ function appMain() {
 
       //씬노드 추가
       var geometry = new THREE.CubeGeometry(1,1,1);
-      /*
-      var material = new THREE.MeshBasicMaterial(
-        {
-          color: 0x00ff00,
-          wireframe : true
-
-        }
-      );
-      */
       var node = new THREE.Mesh(geometry, material);
+      // node.name = 'wire_cube';
 
-      node.name = 'wire_cube';
+      var loader = new THREE.FBXLoader();
+      loader.load( '../res/box1.fbx', function ( object ) {
+        console.log(object);
+        //object.children
+        object.children[0].material.map = texture;
+        self.scene.add( object );
+      } );
 
-      this.scene.add(node);
+
+
+      //this.scene.add(node);
     },
     event : {
       onWindowResize : function(evt) {
 
-
         if(this.window_size) { //창모드일경우
-
         }
         else { //전체 화면일경우
           this.updateAll({
