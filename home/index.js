@@ -1,7 +1,36 @@
+
+
+
+
+
 function appMain() {
 
   let canvas = document.getElementById('canvas_box_texture');
   let context = canvas.getContext('2d');
+
+  let ObjectMgr = {
+    Objlist : [],
+    addRect : function (_x,_y,_w,_h) {
+      //console.log(this);
+      this.Objlist.push({
+        fillStyle : 'yellow',
+        x: _x,
+        y: _y,
+        w: _w,
+        h: _h,
+        draw : function (context) {
+          context.fillStyle = 'yellow';
+          context.fillRect(this.x,this.y,this.w,this.h);
+
+        }
+      })
+
+    }
+  };
+
+
+
+
 
 
   //--------------------------
@@ -56,24 +85,31 @@ function appMain() {
 
       var texture = new THREE.Texture(canvas);
       texture.needsUpdate = true;
+      self.work_texture = texture;
+
+      /*
+      texture.needsUpdate = true;
       var material = new THREE.MeshBasicMaterial({
         map : texture,
         //wireframe : true,
         transparent : true //투명 컬러값 적용시킴
 
       });
+      */
 
       //씬노드 추가
-      var geometry = new THREE.CubeGeometry(1,1,1);
-      var node = new THREE.Mesh(geometry, material);
+      //var geometry = new THREE.CubeGeometry(1,1,1);
+      //var node = new THREE.Mesh(geometry, material);
       // node.name = 'wire_cube';
 
       var loader = new THREE.FBXLoader();
-      loader.load( '../res/box1.fbx', function ( object ) {
+      loader.load( '../res/test box.FBX', function ( object ) {
         console.log(object);
         //object.children
-        object.children[0].material.map = texture;
+        object.children[0].material[0].map = texture;
+        //object.children[0].material[1].map = texture;
         self.scene.add( object );
+        //self.mainObject = object;
       } );
 
 
@@ -126,26 +162,44 @@ function appMain() {
         context.moveTo(-canvas.width / 2, 0);
         context.lineTo(canvas.width / 2, 0);
         context.stroke()
+
+
         context.beginPath();
         context.moveTo(0, -canvas.height / 2);
         context.lineTo(0, canvas.height / 2);
         context.stroke();
 
+
+        for(i=0;i<ObjectMgr.Objlist.length;i++) {
+
+          ObjectMgr.Objlist[i].draw(context);
+
+        }
+
+        /*
         context.fillStyle = 'yellow';
         context.fillRect(0,0,50,50);
 
         context.fillStyle = 'yellow';
         context.fillRect(100,-100,50,50);
+        */
 
         //console.log(event);
+        //this.work_texture.needsUpdate = true;
         this.updateAll();
 
       }
     }
   });
 
+
+  return {
+    sceneMgr : Smgr,
+    ObjectMgr : ObjectMgr
+  }
+
 }
 
-appMain();
+var theApp = appMain();
 
 
