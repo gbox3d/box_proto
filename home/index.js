@@ -5,6 +5,8 @@
 
 function appMain() {
 
+  var Image_loader = new THREE.ImageLoader();
+
   let canvas = document.getElementById('canvas_box_texture');
   let context = canvas.getContext('2d');
 
@@ -24,6 +26,27 @@ function appMain() {
 
         }
       })
+    },
+    addImage : function (url,x,y,w,h) {
+      Image_loader.load(url,
+        (function (image) {
+          this.Objlist.push({
+            img : image,
+            x : x,
+            y : y,
+            w : w,
+            h : h,
+            draw : function (context) {
+              context.drawImage( this.img, this.x, this.y,this.w,this.h);
+
+            }
+          })
+        }).bind(this),
+        undefined,
+        function () {
+          console.log('img load failed')
+        }
+      );
 
     }
   };
@@ -63,7 +86,7 @@ function appMain() {
 
       //방향광 추가
       light = new THREE.DirectionalLight( 0xffffff );
-      light.position.set( 0, 200, 100 );
+      light.position.set( -250, 200, -100 );
       light.castShadow = true;
       light.shadow.camera.top = 180;
       light.shadow.camera.bottom = -100;
@@ -107,6 +130,8 @@ function appMain() {
         console.log(object);
         //object.children
         object.children[0].material[0].map = texture;
+        object.children[0].material[0].color = {r:1,g:1,b:1}
+
         //object.children[0].material[1].map = texture;
         self.scene.add( object );
         //self.mainObject = object;
@@ -155,9 +180,10 @@ function appMain() {
 
         context.setTransform(1, 0, 0, 1, canvas.width / 2, canvas.height / 2); //변환행렬 초기화
 
-        context.fillStyle = 'blue';
+        context.fillStyle = '#afab96';
         context.fillRect(-canvas.width / 2, -canvas.height / 2, canvas.width, canvas.height);
 
+        //십자선
         context.beginPath();
         context.moveTo(-canvas.width / 2, 0);
         context.lineTo(canvas.width / 2, 0);
@@ -201,5 +227,8 @@ function appMain() {
 }
 
 var theApp = appMain();
+
+
+//theApp.ObjectMgr.addImage('../res/gun1.jpg',-100,-100,150,150)
 
 
