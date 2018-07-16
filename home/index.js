@@ -1,7 +1,9 @@
 
+/*
+{"objlist":[{"type":"img","img":{},"x":-100,"y":-100,"w":150,"h":150},{"type":"text","text":"hello","x":0,"y":0,"fontName":"Calibri","size":60,"color":"#000000"},{"type":"rect","color":"#ff0000","x":0,"y":0,"w":64,"h":64}],"canvasBkg":{"fillColor":"#afab96","pattern":null}}
+ */
 
-
-
+var __testdata = "{\"objlist\":[{\"type\":\"img\",\"url\":\"../res/mina.jpg\",\"x\":-200,\"y\":-100,\"w\":110,\"h\":170},{\"type\":\"img\",\"url\":\"../res/gun1.jpg\",\"x\":0,\"y\":-100,\"w\":260,\"h\":173.5},{\"type\":\"text\",\"text\":\"hello\",\"x\":0,\"y\":0,\"fontName\":\"Calibri\",\"size\":60,\"color\":\"#000000\"}],\"canvasBkg\":{\"fillColor\":\"#afab96\",\"pattern\":null}}"
 
 function appMain() {
 
@@ -10,49 +12,132 @@ function appMain() {
   let canvas = document.getElementById('canvas_box_texture');
   let context = canvas.getContext('2d');
 
+  //let backgroundCanvasFillColor = '#afab96';
+  let canvasBkg = {
+    fillColor : '#afab96',
+    pattern : null
+  }
+
   let ObjectMgr = {
     Objlist : [],
-    addRect : function (_x,_y,_w,_h) {
+    addRect : function (_x,_y,_w,_h,_color) {
       //console.log(this);
       this.Objlist.push({
-        fillStyle : 'yellow',
+        type : 'rect',
+        color : _color,
         x: _x,
         y: _y,
         w: _w,
         h: _h,
         draw : function (context) {
-          context.fillStyle = 'yellow';
+          context.fillStyle = this.color;
           context.fillRect(this.x,this.y,this.w,this.h);
 
         }
       })
     },
     addImage : function (url,x,y,w,h) {
+
+      let __obj = {
+        type : 'img',
+        //img : image,
+        url : url,
+        x : x,
+        y : y,
+        w : w,
+        h : h,
+        draw : function () {
+          
+        }
+      }
+
+      this.Objlist.push(__obj)
+
       Image_loader.load(url,
         (function (image) {
-          this.Objlist.push({
-            img : image,
-            x : x,
-            y : y,
-            w : w,
-            h : h,
-            draw : function (context) {
-              context.drawImage( this.img, this.x, this.y,this.w,this.h);
 
-            }
-          })
+          __obj.draw = function (context) {
+            context.drawImage( image, this.x, this.y,this.w,this.h);
+          }
+
         }).bind(this),
         undefined,
         function () {
           console.log('img load failed')
         }
       );
+    },
+    addText : function (_text,_x,_y,_fontName,_color,_size) {
+      this.Objlist.push({
+        type : 'text',
+        text : _text,
+        x: _x,
+        y: _y,
+        fontName : _fontName,
+        size : _size,
+        color : _color,
+        draw: function (context) {
 
+          context.font = this.size + 'pt ' + ' ' + this.fontName;
+          context.fillStyle = this.color;//'#000000';
+          context.fillText(this.text, this.x,this.y);
+
+        }
+
+      })
+
+    },
+    clearObject : function() {
+      // console.log(this)
+      this.Objlist = [];
+    },
+    loader : {
+      'rect' : (function (obj) {
+
+      }).bind()
     }
+
   };
 
+  let _loader = {
+    exportObjData : function () {
 
+      _exportObj = {
+        objlist : ObjectMgr.Objlist,
+        canvasBkg : canvasBkg
+      }
 
+      return JSON.stringify(_exportObj);
+
+    },
+    importObjData : function (data) {
+      let _obj = JSON.parse(data);
+      let _objlist = _obj.objlist;
+
+      for(var i=0;i<_objlist.length;i++) {
+
+        let _item = _objlist[i]
+
+        switch(_item.type) {
+          case 'rect':
+            ObjectMgr.addRect(_item.x_item.y,_item.w,_item.h,_item.color)
+            break;
+          case 'img':
+            ObjectMgr.addImage(_item.url,_item.x,_item.y,_item.w,_item.h)
+
+            break;
+          case 'text':
+            ObjectMgr.addText(_item.text,_item.x,_item.y,_item.fontName,_item.color,_item.size)
+
+            break;
+        }
+
+      }
+
+      console.log(_obj);
+    }
+
+  }
 
 
 
@@ -180,8 +265,10 @@ function appMain() {
 
         context.setTransform(1, 0, 0, 1, canvas.width / 2, canvas.height / 2); //변환행렬 초기화
 
-        context.fillStyle = '#afab96';
+        context.fillStyle = canvasBkg.fillColor;
         context.fillRect(-canvas.width / 2, -canvas.height / 2, canvas.width, canvas.height);
+
+        /*
 
         //십자선
         context.beginPath();
@@ -194,13 +281,19 @@ function appMain() {
         context.moveTo(0, -canvas.height / 2);
         context.lineTo(0, canvas.height / 2);
         context.stroke();
+        */
 
 
         for(i=0;i<ObjectMgr.Objlist.length;i++) {
 
+          
           ObjectMgr.Objlist[i].draw(context);
 
         }
+
+        /*context.font = '40pt Calibri';
+        context.fillStyle = 'blue';
+        context.fillText('Hello World!', 0, 0);*/
 
         /*
         context.fillStyle = 'yellow';
@@ -215,13 +308,17 @@ function appMain() {
         this.updateAll();
 
       }
+    },
+    updateTexture : function () {
+      this.work_texture.needsUpdate = true;
     }
   });
 
 
   return {
     sceneMgr : Smgr,
-    ObjectMgr : ObjectMgr
+    ObjectMgr : ObjectMgr,
+    loader : _loader
   }
 
 }
