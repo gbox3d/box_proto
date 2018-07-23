@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title> box proto </title>
+
+  <script src='../../libs/extra/jquery-2.0.3.min.js'></script>
+  <script src='../../libs/threejs/three.js'></script>
+  <script src="../../libs/threejs/js/controls/OrbitControls.js"></script>
+  <script src="../../libs/elvis5/core.js"></script>
+
+  <!--<script src="../libs/threejs/js/libs/inflate.min.js"></script>-->
+  <script src="../../libs/threejs/js/loaders/FBXLoader.js"></script>
+
+
+</head>
+<body>
+
+<div>
+  <canvas id="canvas_box_texture"  width="512" height="512" >  </canvas>
+</div>
+
+<div>
+  <canvas id="canvas_box_texture2"  width="256" height="256" >  </canvas>
+</div>
+
+
+<script>
+
+  var mainCanvas = document.getElementById('canvas_box_texture');
+
+  (function () {
+    let canvas = mainCanvas;
+    let context = canvas.getContext('2d');
+
+    context.setTransform(1, 0, 0, 1, canvas.width / 2, canvas.height / 2); //변환행렬 초기화
+
+    context.fillStyle = '#71afff';
+    context.fillRect(-canvas.width / 2, -canvas.height / 2, canvas.width, canvas.height);
+
+    var imageObj = new Image();
+
+    imageObj.onload = function() {
+      context.drawImage(imageObj,0,0);
+    };
+    imageObj.src = '../../res/gun1.jpg';
+    //imageObj.src = mainCanvas.toDataURL();
+
+
+
+  })()
+
+  function test() {
+    let canvas = document.getElementById('canvas_box_texture2');
+    let context = canvas.getContext('2d');
+    context.setTransform(1, 0, 0, 1, canvas.width / 2, canvas.height / 2); //변환행렬 초기화
+
+    context.fillStyle = '#fca5ff';
+    context.fillRect(-canvas.width / 2, -canvas.height / 2, canvas.width, canvas.height);
+
+
+    var imageObj = new Image();
+
+    imageObj.onload = function() {
+      context.drawImage(imageObj, -32,-32,64,64);
+    };
+    //imageObj.src = 'https://www.html5canvastutorials.com/demos/assets/darth-vader.jpg';
+    imageObj.src = mainCanvas.toDataURL();
+  }
+
+
+</script>
+
+</body>
+</html>

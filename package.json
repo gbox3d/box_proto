@@ -2,10 +2,12 @@
   "name": "tutorial",
   "version": "1.0.0",
   "description": "electron tutorial by topdown lee",
-  "main": "app/main.js",
+  "main": "home/main.js",
   "scripts": {
-    "win": "echo \"Error: no window specified\" && exit 1",
-    "mac": "node_modules/electron/dist/Electron.app/Contents/MacOS/Electron .",
+    "mac": "node_modules/.bin/electron .",
+    "win": "node_modules/.bin/electron .",
+    "ex1": "node_modules/.bin/electron ./test/ex1",
+    "ex2": "node_modules/.bin/electron ./test/ex2_canvas2img",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "topdown lee",
