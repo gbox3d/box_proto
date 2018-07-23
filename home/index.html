@@ -9,6 +9,9 @@
   <script src="../libs/threejs/js/controls/OrbitControls.js"></script>
   <script src="../libs/elvis5/core.js"></script>
 
+  <script src="../libs/gbox3d/core.js"></script>
+
+
   <!--<script src="../libs/threejs/js/libs/inflate.min.js"></script>-->
   <script src="../libs/threejs/js/loaders/FBXLoader.js"></script>
 
@@ -20,11 +23,21 @@
   <canvas id="canvas_box_texture"  width="512" height="512" >  </canvas>
 </div>
 
+<div id="test-ui">
+  <button class="add-text">add text</button>
+  <button class="add-img">add img</button>
+  <button class="add-rect">add rect</button>
+
+</div>
+
 <div id="canvas_3d" style="
     margin: auto;
     width: 512px;height: 512px;" ></div>
 
+<script src="test_ui_handlers.js"> </script>
+<script src="editor.js"> </script>
 <script src="index.js"> </script>
+
 
 </body>
 </html>

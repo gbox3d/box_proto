@@ -68,6 +68,10 @@ function appMain() {
       );
     },
     addText : function (_text,_x,_y,_fontName,_color,_size) {
+
+      //context.font = '20pt Calibri';
+      //context.textAlign = 'center';
+
       this.Objlist.push({
         type : 'text',
         text : _text,
@@ -76,12 +80,24 @@ function appMain() {
         fontName : _fontName,
         size : _size,
         color : _color,
+        box_rgn : new gbox3d.core.Box2d({
+          topleft : new gbox3d.core.Vect2d(0,0),
+          bottomright : new gbox3d.core.Vect2d(0,0)
+        }),
         draw: function (context) {
 
           context.font = this.size + 'pt ' + ' ' + this.fontName;
           context.fillStyle = this.color;//'#000000';
           context.fillText(this.text, this.x,this.y);
 
+          let mertrice = context.measureText(this.text);
+          //this.width = mertrice.width;
+          //this.height = this.size;
+          this.box_rgn.topLeft.X = this.x;
+          this.box_rgn.topLeft.Y = this.y;
+
+          this.box_rgn.bottomRight.X = this.x + mertrice.width;
+          this.box_rgn.bottomRight.Y = this.y + this.size;
         }
 
       })
@@ -255,6 +271,9 @@ function appMain() {
       },
       onMouseDown : function(event) {
 
+
+
+
       },
       onUpdate : function(event) {
 
@@ -318,12 +337,17 @@ function appMain() {
   return {
     sceneMgr : Smgr,
     ObjectMgr : ObjectMgr,
-    loader : _loader
+    loader : _loader,
+    mainCanvas : canvas
   }
 
 }
 
 var theApp = appMain();
+theApp.editor = lm_editor({
+  canvas : theApp.mainCanvas
+});
+lm_test_ui_hander();
 
 
 //theApp.ObjectMgr.addImage('../res/gun1.jpg',-100,-100,150,150)
