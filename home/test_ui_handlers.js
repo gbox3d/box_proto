@@ -17,4 +17,13 @@ function lm_test_ui_hander() {
     theApp.ObjectMgr.addImage('../res/gun1.jpg',0,-100,520/2,347/2)
   })
 
+  ui_root.querySelector("button.add-expld").addEventListener('click',function () {
+    theApp.ObjectMgr.addImage('../res/box1_expld.png',-256,-256,512,512)
+  })
+
+  ui_root.querySelector("button.update").addEventListener('click',function () {
+    theApp.sceneMgr.work_texture.needsUpdate = true;
+  })
+
+
 }

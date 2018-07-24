@@ -8,7 +8,7 @@
     "win": "node_modules/.bin/electron .",
     "ex1": "node_modules/.bin/electron ./test/ex1",
     "ex2": "node_modules/.bin/electron ./test/ex2_canvas2img",
-    "http" : "./node_modules/.bin/http-server ./",
+    "http": "./node_modules/.bin/http-server ./",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "topdown lee",

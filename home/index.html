@@ -19,20 +19,26 @@
 </head>
 <body>
 
-<div>
+<div style="position: absolute; transform:translate(0px,0px) " >
   <canvas id="canvas_box_texture"  width="512" height="512" >  </canvas>
 </div>
 
-<div id="test-ui">
+<div   id="canvas_3d" style="
+  position: absolute;
+    transform: translateX(512px);
+    margin: auto;
+    width: 512px;height: 512px;" >
+</div>
+
+<div id="test-ui" style="position: absolute;transform: translateY(512px)" >
   <button class="add-text">add text</button>
   <button class="add-img">add img</button>
   <button class="add-rect">add rect</button>
-
+  <button class="add-expld">add expld</button>
+  <button class="update">update</button>
 </div>
 
-<div id="canvas_3d" style="
-    margin: auto;
-    width: 512px;height: 512px;" ></div>
+
 
 <script src="test_ui_handlers.js"> </script>
 <script src="editor.js"> </script>

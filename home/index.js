@@ -47,7 +47,7 @@ function appMain() {
         w : w,
         h : h,
         draw : function () {
-          
+
         }
       }
 
@@ -94,10 +94,10 @@ function appMain() {
           //this.width = mertrice.width;
           //this.height = this.size;
           this.box_rgn.topLeft.X = this.x;
-          this.box_rgn.topLeft.Y = this.y;
+          this.box_rgn.topLeft.Y = this.y - this.size;
 
           this.box_rgn.bottomRight.X = this.x + mertrice.width;
-          this.box_rgn.bottomRight.Y = this.y + this.size;
+          this.box_rgn.bottomRight.Y = this.y;
         }
 
       })
@@ -115,7 +115,7 @@ function appMain() {
 
   };
 
-  let _loader = {
+  let ObjLoader = {
     exportObjData : function () {
 
       _exportObj = {
@@ -227,16 +227,35 @@ function appMain() {
       // node.name = 'wire_cube';
 
       var loader = new THREE.FBXLoader();
-      loader.load( '../res/test box.FBX', function ( object ) {
+      loader.load( '../res/box1.FBX', function ( object ) {
         console.log(object);
         //object.children
-        object.children[0].material[0].map = texture;
-        object.children[0].material[0].color = {r:1,g:1,b:1}
+        object.children[0].material.map = texture;
+        object.children[0].material.color = {r:1,g:1,b:1}
 
         //object.children[0].material[1].map = texture;
         self.scene.add( object );
         //self.mainObject = object;
       } );
+
+      /*
+
+      let _texLoader = new THREE.TextureLoader();
+      _texLoader.load('../res/box1_expld.png',
+        function (texture) {
+          self.expld_texture = texture;
+        },
+        // onProgress callback currently not supported
+        undefined,
+
+        // onError callback
+        function ( err ) {
+          console.error( 'An error happened.' );
+        }
+      );
+
+      */
+
 
 
 
@@ -302,10 +321,9 @@ function appMain() {
         context.stroke();
         */
 
-
         for(i=0;i<ObjectMgr.Objlist.length;i++) {
 
-          
+
           ObjectMgr.Objlist[i].draw(context);
 
         }
@@ -337,7 +355,7 @@ function appMain() {
   return {
     sceneMgr : Smgr,
     ObjectMgr : ObjectMgr,
-    loader : _loader,
+    loader : ObjLoader,
     mainCanvas : canvas
   }
 
@@ -345,7 +363,8 @@ function appMain() {
 
 var theApp = appMain();
 theApp.editor = lm_editor({
-  canvas : theApp.mainCanvas
+  canvas : theApp.mainCanvas,
+  Objlist : theApp.ObjectMgr.Objlist
 });
 lm_test_ui_hander();
 
