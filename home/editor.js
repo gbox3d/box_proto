@@ -1,4 +1,7 @@
+
 function lm_editor(_) {
+
+ 
 
   let editorObj = {
     selectObj : null
@@ -18,7 +21,7 @@ function lm_editor(_) {
     x -= canvas.width / 2;
     y -= canvas.height / 2
 
-    for(var i=_Objlist.length-1; i >= 0 ;i++) {
+    for(var i=_Objlist.length-1; i >= 0 ;i--) {
 
       let _obj = _Objlist[i];
 
@@ -36,13 +39,19 @@ function lm_editor(_) {
     }
   }
 
+  let _prevX=0;
+  let _prevY=0;
   function _mouseDrag(evt) {
+    console.log( evt);
+    var movementX = (_prevX ? evt.screenX - _prevX : 0)
+    var movementY = (_prevY ? evt.screenY - _prevY : 0)
+    _prevX = evt.screenX;
+    _prevY = evt.screenY;
 
-    editorObj.selectObj.x += evt.movementX
-    editorObj.selectObj.y += evt.movementY
+    console.log(movementX + "," + _prevX);
 
-
-
+    editorObj.selectObj.x += movementX
+    editorObj.selectObj.y += movementY
 
   }
   function _mouseMove(evt) {
@@ -71,7 +80,7 @@ function lm_editor(_) {
   })
 
   let OnMouseUp = _mouseUp;
-  canvas.addEventListener('mouseup',(evt)=> {
+  canvas.addEventListener('mouseup',function(evt) {
     OnMouseUp(evt);
   });
 

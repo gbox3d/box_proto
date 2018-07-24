@@ -211,20 +211,9 @@ function appMain() {
       texture.needsUpdate = true;
       self.work_texture = texture;
 
-      /*
-      texture.needsUpdate = true;
-      var material = new THREE.MeshBasicMaterial({
-        map : texture,
-        //wireframe : true,
-        transparent : true //투명 컬러값 적용시킴
-
-      });
-      */
 
       //씬노드 추가
-      //var geometry = new THREE.CubeGeometry(1,1,1);
-      //var node = new THREE.Mesh(geometry, material);
-      // node.name = 'wire_cube';
+      
 
       var loader = new THREE.FBXLoader();
       loader.load( '../res/box1.FBX', function ( object ) {
@@ -238,24 +227,7 @@ function appMain() {
         //self.mainObject = object;
       } );
 
-      /*
-
-      let _texLoader = new THREE.TextureLoader();
-      _texLoader.load('../res/box1_expld.png',
-        function (texture) {
-          self.expld_texture = texture;
-        },
-        // onProgress callback currently not supported
-        undefined,
-
-        // onError callback
-        function ( err ) {
-          console.error( 'An error happened.' );
-        }
-      );
-
-      */
-
+      
 
 
 
@@ -328,9 +300,10 @@ function appMain() {
 
         }
 
-        /*context.font = '40pt Calibri';
+       /*context.font = '40pt Calibri';
         context.fillStyle = 'blue';
-        context.fillText('Hello World!', 0, 0);*/
+        context.fillText('Hello World!', 0, 0);
+        */
 
         /*
         context.fillStyle = 'yellow';
@@ -362,10 +335,12 @@ function appMain() {
 }
 
 var theApp = appMain();
+
 theApp.editor = lm_editor({
   canvas : theApp.mainCanvas,
   Objlist : theApp.ObjectMgr.Objlist
 });
+
 lm_test_ui_hander();
 
 
