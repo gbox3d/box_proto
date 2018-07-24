@@ -10,9 +10,14 @@ function lm_editor(_) {
   let _Objlist =  _.Objlist;
   let canvas = _.canvas;
 
+  let _prevX=0;
+  let _prevY=0;
   function _mouseDown(evt) {
 
     let rect = canvas.getBoundingClientRect()
+
+    _prevX = evt.screenX
+    _prevY = evt.screenY
 
     let x = evt.clientX - rect.left;
     let y = evt.clientY - rect.top;
@@ -39,8 +44,7 @@ function lm_editor(_) {
     }
   }
 
-  let _prevX=0;
-  let _prevY=0;
+
   function _mouseDrag(evt) {
     console.log( evt);
     var movementX = (_prevX ? evt.screenX - _prevX : 0)
