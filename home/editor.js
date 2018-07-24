@@ -36,7 +36,7 @@ function lm_editor(_) {
 
   }
 
-  canvas.addEventListener('mousedown',(evt)=> {
+  canvas.addEventListener('mousedown',function(evt) {
 
     _mouseDown({
       canvas : _.canvas,
@@ -47,7 +47,7 @@ function lm_editor(_) {
 
   });
 
-  canvas.addEventListener('mouseup',(evt)=> {
+  canvas.addEventListener('mouseup',function (evt) {
 
   });
 
