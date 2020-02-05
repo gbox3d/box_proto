@@ -664,9 +664,12 @@ gbox3d.core.Box2d.prototype.getCollisionArea = function (node) {
  var computedStyle = window.getComputedStyle(element);
  var css_transform = computedStyle.getPropertyValue('-webkit-transform');
  */
-gbox3d.core.matrix2d = function(css_transform) {
-    if(css_transform) {
+gbox3d.core.matrix2d = function(_) {
+    if(_.css_transform) {
         this.matrix = new WebKitCSSMatrix(css_transform);
+    }
+    else if(_.mat2d) {
+        this.matrix = _.mat2d;
     }
     else {
         this.matrix = new WebKitCSSMatrix();
@@ -684,7 +687,14 @@ gbox3d.core.matrix2d.prototype.setupFromElement = function(element)
 
 gbox3d.core.matrix2d.prototype.translate = function(x,y) {
 
-    this.matrix = this.matrix.translate(x,y);
+    if(this.matrix.translate) {
+      this.matrix = this.matrix.translate(x,y);
+    }
+    else {
+        mat2d.fromTranslation(this.matrix, vec2.set(vec2.create(),x,y))
+    }
+
+
 };
 gbox3d.core.matrix2d.prototype.rotate = function(angle) {
     this.matrix = this.matrix.rotate(angle);

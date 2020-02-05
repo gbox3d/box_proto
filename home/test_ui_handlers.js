@@ -8,7 +8,7 @@ function lm_test_ui_hander() {
   console.log(ui_root)
 
   ui_root.querySelector("button.add-text").addEventListener('click',function () {
-    theApp.ObjectMgr.addText("hello",0,0,'Calibri','#000000',60);
+    theApp.ObjectMgr.addText("hello",0,0,'nanumfontpen','#000000',60);
   })
 
   ui_root.querySelector("button.add-rect").addEventListener('click',function () {

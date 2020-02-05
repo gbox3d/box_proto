@@ -37,11 +37,14 @@ function ObjImage(_) {
 
 ObjImage.prototype.getRgn = function()
 {
-  let _rgn = new THREE.Box2(
-    new THREE.Vector2(0-(this.image.width/2),0-(this.image.height/2)),
-    new THREE.Vector2((this.image.width/2),(this.image.height/2)));
+  // let _rgn = new THREE.Box2(
+  //   new THREE.Vector2(0-(this.image.width/2),0-(this.image.height/2)),
+  //   new THREE.Vector2((this.image.width/2),(this.image.height/2)));
+  //
+  // return _rgn;
 
-  return _rgn;
+  return this.rgn;
+
 }
 
 

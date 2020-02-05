@@ -40,41 +40,8 @@ function appMain() {
       this.Objlist.push(obj);
 
 
-      /*
-      let __obj = {
-        type : 'img',
-        //img : image,
-        url : url,
-        x : x,
-        y : y,
-        w : w,
-        h : h,
-        draw : function () {
-
-        }
-      }
-
-      this.Objlist.push(__obj)
-
-      Image_loader.load(url,
-        (function (image) {
-
-          __obj.draw = function (context) {
-            context.drawImage( image, this.x, this.y,this.w,this.h);
-          }
-
-        }).bind(this),
-        undefined,
-        function () {
-          console.log('img load failed')
-        }
-      );
-      */
     },
     addText : function (_text,_x,_y,_fontName,_color,_size) {
-
-      //context.font = '20pt Calibri';
-      //context.textAlign = 'center';
 
       let obj = new ObjText({
         size : _size,
@@ -89,46 +56,10 @@ function appMain() {
 
       this.Objlist.push(obj);
 
-      /*this.Objlist.push({
-        type : 'text',
-        text : _text,
-        x: _x,
-        y: _y,
-        fontName : _fontName,
-        size : _size,
-        color : _color,
-        box_rgn : new gbox3d.core.Box2d({
-          topleft : new gbox3d.core.Vect2d(0,0),
-          bottomright : new gbox3d.core.Vect2d(0,0)
-        }),
-        draw: function (context) {
-
-          context.font = this.size + 'pt ' + ' ' + this.fontName;
-          context.fillStyle = this.color;//'#000000';
-          context.fillText(this.text, this.x,this.y);
-
-          let mertrice = context.measureText(this.text);
-          //this.width = mertrice.width;
-          //this.height = this.size;
-          this.box_rgn.topLeft.X = this.x;
-          this.box_rgn.topLeft.Y = this.y - this.size;
-
-          this.box_rgn.bottomRight.X = this.x + mertrice.width;
-          this.box_rgn.bottomRight.Y = this.y;
-        }
-
-      })
-      */
-
     },
     clearObject : function() {
       // console.log(this)
       this.Objlist = [];
-    },
-    loader : {
-      'rect' : (function (obj) {
-
-      }).bind()
     }
 
   };
@@ -154,7 +85,7 @@ function appMain() {
 
         switch(_item.type) {
           case 'rect':
-            ObjectMgr.addRect(_item.x_item.y,_item.w,_item.h,_item.color)
+            ObjectMgr.addRect(_item.x,_item.y,_item.w,_item.h,_item.color)
             break;
           case 'img':
             ObjectMgr.addImage(_item.url,_item.x,_item.y,_item.w,_item.h)
