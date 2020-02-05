@@ -16,7 +16,12 @@ function lm_test_ui_hander() {
   })
 
   ui_root.querySelector("button.add-img").addEventListener('click',function () {
-    theApp.ObjectMgr.addImage('../res/gun1.jpg',0,-100,520/2,347/2)
+    theApp.ObjectMgr.addImage({
+      url : "../res/gun1.jpg",
+      scale : new THREE.Vector2(0.5,0.5),
+      lpos : new THREE.Vector2(0,0),
+      rot : 0
+    })
   })
 
   ui_root.querySelector("button.add-expld").addEventListener('click',function () {

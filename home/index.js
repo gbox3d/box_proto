@@ -1,9 +1,4 @@
 
-/*
-{"objlist":[{"type":"img","img":{},"x":-100,"y":-100,"w":150,"h":150},{"type":"text","text":"hello","x":0,"y":0,"fontName":"Calibri","size":60,"color":"#000000"},{"type":"rect","color":"#ff0000","x":0,"y":0,"w":64,"h":64}],"canvasBkg":{"fillColor":"#afab96","pattern":null}}
- */
-
-var __testdata = "{\"objlist\":[{\"type\":\"img\",\"url\":\"../res/mina.jpg\",\"x\":-200,\"y\":-100,\"w\":110,\"h\":170},{\"type\":\"img\",\"url\":\"../res/gun1.jpg\",\"x\":0,\"y\":-100,\"w\":260,\"h\":173.5},{\"type\":\"text\",\"text\":\"hello\",\"x\":0,\"y\":0,\"fontName\":\"Calibri\",\"size\":60,\"color\":\"#000000\"}],\"canvasBkg\":{\"fillColor\":\"#afab96\",\"pattern\":null}}"
 
 function appMain() {
 
@@ -11,6 +6,8 @@ function appMain() {
 
   let canvas = document.getElementById('canvas_box_texture');
   let context = canvas.getContext('2d');
+
+  let _rootTransform = gbox3d.matics.helper.makeMat2dFromTranslation({x:canvas.width/2,y:canvas.height/2});
 
   //let backgroundCanvasFillColor = '#afab96';
   let canvasBkg = {
@@ -36,8 +33,14 @@ function appMain() {
         }
       })
     },
-    addImage : function (url,x,y,w,h) {
+    addImage : function (_) {
 
+      let obj = new ObjImage(_);
+
+      this.Objlist.push(obj);
+
+
+      /*
       let __obj = {
         type : 'img',
         //img : image,
@@ -66,13 +69,27 @@ function appMain() {
           console.log('img load failed')
         }
       );
+      */
     },
     addText : function (_text,_x,_y,_fontName,_color,_size) {
 
       //context.font = '20pt Calibri';
       //context.textAlign = 'center';
 
-      this.Objlist.push({
+      let obj = new ObjText({
+        size : _size,
+        color : _color,
+        fontName : _fontName,
+        text : _text,
+        lpos : new THREE.Vector2(0,0),
+        scale : new THREE.Vector2(1,1),
+        rot : 0,
+        pos : new THREE.Vector2(_x,_y),
+      })
+
+      this.Objlist.push(obj);
+
+      /*this.Objlist.push({
         type : 'text',
         text : _text,
         x: _x,
@@ -101,6 +118,7 @@ function appMain() {
         }
 
       })
+      */
 
     },
     clearObject : function() {
@@ -155,6 +173,10 @@ function appMain() {
 
   }
 
+  let ObjTfmWidget = new widget_transform({
+    canvas : canvas,
+    Objlist : ObjectMgr.Objlist
+  });
 
 
   //--------------------------
@@ -273,10 +295,16 @@ function appMain() {
          deltaTick : 루프지연시간 (ms)
          */
 
-        context.setTransform(1, 0, 0, 1, canvas.width / 2, canvas.height / 2); //변환행렬 초기화
-
+        context.save();
         context.fillStyle = canvasBkg.fillColor;
-        context.fillRect(-canvas.width / 2, -canvas.height / 2, canvas.width, canvas.height);
+        context.fillRect(0,0, canvas.width, canvas.height);
+        //context.setTransform(1, 0, 0, 1, canvas.width / 2, canvas.height / 2); //변환행렬 초기화
+
+
+        gbox3d.matics.helper.mat2dToCCTX({
+          context:context,
+          transform : _rootTransform
+        })
 
         /*
 
@@ -295,25 +323,17 @@ function appMain() {
 
         for(i=0;i<ObjectMgr.Objlist.length;i++) {
 
-
-          ObjectMgr.Objlist[i].draw(context);
+          ObjectMgr.Objlist[i].draw({
+            context: context,
+            rootTransform : _rootTransform
+          });
 
         }
 
-       /*context.font = '40pt Calibri';
-        context.fillStyle = 'blue';
-        context.fillText('Hello World!', 0, 0);
-        */
+        ObjTfmWidget.draw(context,_rootTransform)
 
-        /*
-        context.fillStyle = 'yellow';
-        context.fillRect(0,0,50,50);
+        context.restore();
 
-        context.fillStyle = 'yellow';
-        context.fillRect(100,-100,50,50);
-        */
-
-        //console.log(event);
         //this.work_texture.needsUpdate = true;
         this.updateAll();
 
@@ -329,6 +349,7 @@ function appMain() {
     sceneMgr : Smgr,
     ObjectMgr : ObjectMgr,
     loader : ObjLoader,
+    ObjTfmWidget : ObjTfmWidget,
     mainCanvas : canvas
   }
 
@@ -336,10 +357,13 @@ function appMain() {
 
 var theApp = appMain();
 
+
+/*
 theApp.editor = lm_editor({
   canvas : theApp.mainCanvas,
   Objlist : theApp.ObjectMgr.Objlist
 });
+*/
 
 lm_test_ui_hander();
 

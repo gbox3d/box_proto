@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>ex3</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+
+  <script src="../../libs/threejs/three.min.js"></script>
+  <script src="../../libs/gbox3d/gl-matrix-min.js"></script>
+  <script src="../../libs/gbox3d/gl-matics.js"></script>
+
+
+</head>
+
+<body>
+
+<div>
+  <canvas id="mainCanvas"  width="512" height="512" >  </canvas>
+</div>
+
+
+
+<script>
+
+  function test1() {
+    var _transform = mat2d.create();
+
+    console.log(_transform);
+
+    var _translate =  vec2.create();
+    console.log(_translate);
+
+  }
+
+  // instantiate a loader
+  var loader = new THREE.ImageLoader();
+
+  // load a image resource
+  loader.load(
+    // resource URL
+    '../../res/mina.jpg',
+    // onLoad callback
+    function ( image ) {
+      // use the image, e.g. draw part of it on a canvas
+      let canvas = mainCanvas;
+      let context = canvas.getContext('2d');
+
+
+      let _rootTransform = mat2d.create()
+      mat2d.fromTranslation(_rootTransform, vec2.set(vec2.create(), canvas.width / 2, canvas.height / 2) )
+
+      //gbox3d.matics.helper.makeMat2dFromTranslation({x:,y:})
+
+      gbox3d.matics.helper.mat2dToCCTX({
+        context : context,
+        transform : _rootTransform
+      })
+
+      context.fillStyle = '#71afff';
+      context.fillRect(-canvas.width / 2, -canvas.height / 2, canvas.width, canvas.height);
+
+      //십자선
+      context.beginPath();
+      context.moveTo(-canvas.width / 2, 0);
+      context.lineTo(canvas.width / 2, 0);
+      context.stroke()
+
+
+      context.beginPath();
+      context.moveTo(0, -canvas.height / 2);
+      context.lineTo(0, canvas.height / 2);
+      context.stroke();
+
+
+      context.save();
+
+      context.scale(0.25,0.25);
+      context.rotate(45);
+      context.translate(-image.width/2,-image.height/2);
+
+      context.drawImage(image,0,0);
+
+      context.restore();
+
+      //
+      {
+        context.save();
+
+        let pos = new THREE.Vector2(-128,-128);
+        let scale = new THREE.Vector2(0.1,0.1);
+        let angle = 90;
+
+        let t1 = gbox3d.matics.helper.makeMat2dFromRotation({degree: angle})
+        let t2 = gbox3d.matics.helper.makeMat2dFromScale(scale);
+        let t3 = gbox3d.matics.helper.makeMat2dFromTranslation({x:-image.width/2,y:-image.height/2});
+        let _tr = mat2d.create();
+
+        // t3 * (t1 * t2)
+        mat2d.multiply(_tr,t2,t1); //_tr = t1* t2
+        mat2d.multiply(_tr,_tr,t3); //_tr = t3 * ( t1* t2)
+
+        //console.log(_tr)
+
+        let t4 = gbox3d.matics.helper.makeMat2dFromTranslation(pos);
+        mat2d.multiply(_tr,t4,_tr); //  _tr * t4
+
+        mat2d.multiply(_tr,_rootTransform,_tr); //root 변환 . _tr * _transform
+
+        gbox3d.matics.helper.mat2dToCCTX({
+          context:context,
+          transform : _tr
+        })
+        context.drawImage(image,0,0);
+        context.restore();
+
+      }
+
+      {
+        context.save();
+
+        let pos = new THREE.Vector2(-128,128);
+        let scale = new THREE.Vector2(0.1,0.1);
+        let angle = -45;
+
+        let t1 = gbox3d.matics.helper.makeMat2dFromRotation({degree: angle})
+        let t2 = gbox3d.matics.helper.makeMat2dFromScale(scale);
+        let t3 = gbox3d.matics.helper.makeMat2dFromTranslation({x:-image.width/2,y:-image.height/2});
+        let _tr = mat2d.create();
+
+        // t3 * (t1 * t2)
+        mat2d.multiply(_tr,t2,t1); //_tr = t1* t2
+        mat2d.multiply(_tr,_tr,t3); //_tr = t3 * ( t1* t2)
+
+        //console.log(_tr)
+
+        let t4 = gbox3d.matics.helper.makeMat2dFromTranslation(pos);
+        mat2d.multiply(_tr,t4,_tr); //  _tr * t4
+
+        mat2d.multiply(_tr,_rootTransform,_tr); //root 변환 . _tr * _transform
+
+        gbox3d.matics.helper.mat2dToCCTX({
+          context:context,
+          transform : _tr
+        })
+        context.drawImage(image,0,0);
+        context.restore();
+
+      }
+
+    },
+
+    // onProgress callback currently not supported
+    undefined,
+
+    // onError callback
+    function () {
+      console.error( 'An error happened.' );
+    }
+  );
+
+
+
+  var mainCanvas = document.getElementById('mainCanvas');
+
+
+
+  (function () {
+
+
+  })()
+
+
+
+
+
+</script>
+
+</body>
+</html>
